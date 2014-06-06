@@ -1,0 +1,113 @@
+---
+
+php_ansible_facts: True
+php_conf_root: /dev/null
+
+
+# Common PHP configuration
+#   For Debian/Ubuntu: each SAPI config is identical
+php:
+  config:
+    # The "greatest hits" of PHP core configuration
+    allow_url_fopen: "On"
+    default_socket_timeout: 60
+    error_log: "syslog"
+    expose_php: "Off"
+    file_uploads: "On"
+    memory_limit: "128M"
+    post_max_size: "8M"
+    upload_max_filesize: "2M"
+
+    # Settings different with respect to PHP's default
+    disable_classes: ""
+    disable_functions: ""
+    display_errors: "Off"
+    display_startup_errors: "On"
+    error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
+    html_errors: "On"
+    log_errors: "On"
+    max_input_time: 60
+    output_buffering: 4096
+    register_argc_argv:
+    request_order: "GP"
+    short_open_tag: "Off"
+    track_errors: "Off"
+    url_rewriter_tags: "'a=href,area=href,frame=src,input=src,form=fakeentry'" #relevant to sessions
+    variables_order: "GPCS"
+  extra_configuration: |
+      ; some configuration
+      ; goes here
+  modules:
+    # builtins
+    cli_server:
+      name: "CLI Server"
+      config:
+        color: "On"
+    date:
+      name: "Date"
+      config:
+        timezone: "America/Central"
+    pdo_mysql:
+      name: "Pdo_mysql"
+      config:
+        cache_size: 2000
+        default_socket: ""
+    mail:
+      name: "mail"
+      config:
+        add_x_header: "On"
+    mysql:
+      name: "MySQL"
+      config:
+        allow_local_infile: "On"
+        allow_persistent: "On"
+        cache_size: 2000
+        connect_timeout: 60
+        max_persistent:
+        max_links:
+        trace_mode: "Off"
+    mysqlnd:
+      name: "mysqlnd"
+      config:
+        collect_statistics: "On"
+        collect_memory_statistics: "On"
+    odbc:
+      name: "ODBC"
+      config:
+        allow_persistent: "On"
+        max_persistent: -1
+        max_links: -1
+        defaultlrl: 4096
+        defaultbinmode: 1
+    opcache:
+      name: "opcache" # Zend OPCache?
+      config:
+        enable: 1     # my default trox FIXME?
+        memory_consumption: 64
+    sql:
+      name: "SQL"
+      config:
+        safe_mode: "Off"
+    session:
+      name: "Session"
+      config:
+        save_handler: "files"
+        gc_probability: 0
+        bug_compat_42: "Off"
+        bug_compat_warn: "Off"
+        hash_bits_per_character: 5
+
+
+
+###### FPM Configuration
+
+phpfpm:
+  logfile_location: syslog
+  logfile_level: notice
+  default_user:  root # overridden by dist-specific vars/
+  default_group: root # overridden by dist-specific vars/
+  default_mode: 0666
+
+phpfpm_pools:
+
+# vim: syntax=ansible ts=2 sw=2 sts=2 sr et

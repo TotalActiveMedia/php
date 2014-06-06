@@ -1,0 +1,8 @@
+---
+
+- name: Restart FPM
+  service: >
+    name="{{ phpfpm.daemon }}"
+    state="restarted"
+
+# vim: syntax=ansible ts=2 sw=2 sts=2 sr et

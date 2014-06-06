@@ -1,0 +1,24 @@
+; {{ ansible_managed }}
+
+;;; Core configuration ;;;
+
+[PHP]
+{% for key,value in php.config.iteritems() %}
+{{ key }} = {{ value }}
+{% endfor %}
+
+{% if php.extra_configuration is defined %}
+{{ php.extra_configuration }}
+{% endif -%}
+
+;;; Module configuration ;;;
+
+{% for section,dict in php.modules.iteritems() %}
+[{{ dict.name }}]
+{% for key,value in dict.config.iteritems() %}
+{{ section }}.{{ key }}: {{ value }}
+{% endfor %}
+
+{% endfor %}
+
+; vim: syntax=ini ts=2 sw=2 sts=2 sr et

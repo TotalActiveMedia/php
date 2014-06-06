@@ -1,0 +1,71 @@
+; {{ ansible_managed }}
+
+{% if phpfpm_pools.0 is not defined %}
+{# PHP-FPM needs at least one pool to start properly #}
+
+#default]
+user = {{ phpfpm.default_user }}
+listen = 127.0.0.1:9000
+pm = dynamic
+pm.max_children = 50
+
+{% else %}
+
+{% for pool in phpfpm_pools %}
+[{{ pool.name }}]
+
+{% if pool.prefix is defined %}
+prefix = {{ pool.prefix }}
+{% endif %}
+
+user = {{ pool.user|default(phpfpm.default_user) }}
+group = {{ pool.group|default(phpfpm.default_group) }}
+
+{% if pool.listen_socket is defined %}
+listen = {{ pool.listen_socket }}
+listen.owner = {{ pool.user|default(phpfpm.default_user) }}
+listen.group = {{ pool.user|default(phpfpm.default_group) }}
+listen.mode  = {{ pool.mode|default(phpfpm.default_mode) }}
+{% else %}
+listen = {{ pool.listen }}:{{ pool.listen_port }}
+listen.allowed_clients = {{ pool.listen_allowed_clients|default("127.0.0.1") }}
+{% endif %}
+
+pm = {{ pool.pm|default("dynamic") }}
+
+{% if pool.pm == "static" %}
+pm.max_children = {{ pool.pm_max_children|default(50) }}
+{% elif pool.pm == "ondemand" %}
+;pm.process_idle_timeout = 10s;
+{% else %} {# dynamic #}
+pm.max_children = {{ pool.pm_max_children|default(50) }}
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+{% endif %}
+ 
+pm.status_path = /status
+
+ping.path = /ping
+ping.response = pong
+
+;request_slowlog_timeout = 0
+;slowlog = /var/log/php-fpm/www-slow.log
+ 
+; This option should be used when the 'max_execution_time' ini option
+; does not stop script execution for some reason.
+; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
+; Default Value: 0
+;request_terminate_timeout = 0
+ 
+; Set open file descriptor rlimit.
+; Default Value: system defined value
+;rlimit_files = 1024
+ 
+; Default Value: not set
+;chroot = 
+ 
+{% endfor %}
+
+{%- endif %}
+; vim: syntax=ini ts=2 sw=2 sts=2 sr et

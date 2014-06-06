@@ -1,0 +1,20 @@
+---
+
+php:
+  conf_root: /etc/php5
+  packages:
+    - php5
+    - libapache2-mod-php5
+    - libapache2-mod-fcgid
+    - php5-fpm
+  mods_enabled:
+
+phpfpm:
+  daemon: php5-fpm
+  conf_root: /etc/php5/fpm
+  pool_dir: /etc/php5/fpm/pool.d
+  run_dir: /var/run
+  default_user:  www-data
+  default_group: www-data
+
+# vim: syntax=ansible ts=2 sw=2 sts=2 sr et

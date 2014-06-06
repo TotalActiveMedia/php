@@ -1,0 +1,11 @@
+; {{ ansible_managed }}
+
+[global]
+pid = {{ phpfpm.run_dir }}/{{ phpfpm.daemon }}.pid
+
+error_log = {{ phpfpm.logfile_location }}
+log_level = {{ phpfpm.logfile_level }}
+
+include={{ phpfpm.pool_dir }}/*.conf
+
+; vim: syntax=ini ts=2 sw=2 sts=2 sr et

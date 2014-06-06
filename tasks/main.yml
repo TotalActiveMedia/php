@@ -1,0 +1,49 @@
+---
+
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_version|int == 6
+
+- include: Debian.yml
+  when: ansible_distribution == "Ubuntu"
+
+- name: Global php-fpm.conf
+  template: >
+    src="php-fpm.conf.j2"
+    dest="{{ phpfpm.conf_root }}/php-fpm.conf"
+    owner=root  group=root  mode=0644
+  notify: Restart FPM
+
+- name: Remove default FPM pool
+  file: >
+    state=absent
+    path="{{ phpfpm.pool_dir }}/www.conf"
+  notify: Restart FPM
+
+- name: FPM Pools
+  template: >
+    src=pool.conf.j2
+    dest="{{ phpfpm.pool_dir }}/pools.conf"
+    owner=root  group=root  mode=0644
+  notify: Restart FPM
+
+- name: Enable and start service
+  service: >
+    name="{{ phpfpm.daemon }}"
+    state=started
+    enabled=yes
+
+- name: Create Ansible fact directory
+  file: >
+    name=/etc/ansible/facts.d
+    state=directory
+
+- name: Place custom facts
+  template: >
+    src=php.fact.j2
+    dest=/etc/ansible/facts.d/php.json
+  when: php_ansible_facts
+
+# vim: syntax=ansible ts=2 sw=2 sts=2 sr et

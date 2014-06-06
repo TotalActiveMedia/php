@@ -1,0 +1,18 @@
+---
+
+php:
+  conf_root: /etc/
+  packages:
+    - php       # Provides httpd/modules/libphp5.so
+    - php-fpm
+  mods_loaded:
+
+phpfpm:
+  daemon: php-fpm
+  conf_root: /etc
+  pool_dir: /etc/php-fpm.d
+  run_dir: /var/run/php-fpm
+  default_user:  apache
+  default_group: apache
+  
+# vim: syntax=ansible ts=2 sw=2 sts=2 sr et
