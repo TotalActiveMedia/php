@@ -9,6 +9,6 @@
 - name: RedHat | Global php.ini file
   template: >
     src="php.ini.j2"
-    dest="{{ php.conf_root }}/php.ini"
+    dest="{{ php_conf_root }}/php.ini"
 
 # vim: syntax=ansible ts=2 sw=2 sts=2 sr et
