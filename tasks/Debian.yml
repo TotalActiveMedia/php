@@ -9,7 +9,7 @@
 - name: Debian | Global php.ini files
   template: >
     src="php.ini.j2"
-    dest="{{ php.conf_root }}/{{ item }}/php.ini"
+    dest="{{ php_conf_root }}/{{ item }}/php.ini"
   with_items:
     - 'apache2'
     - 'cli'
