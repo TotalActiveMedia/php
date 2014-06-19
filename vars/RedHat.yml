@@ -1,11 +1,10 @@
 ---
 
-php:
-  conf_root: /etc/
-  packages:
+php_conf_root: /etc/
+php_packages:
     - php       # Provides httpd/modules/libphp5.so
     - php-fpm
-  mods_loaded:
+php_mods_loaded:
 
 phpfpm:
   daemon: php-fpm

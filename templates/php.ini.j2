@@ -3,17 +3,17 @@
 ;;; Core configuration ;;;
 
 [PHP]
-{% for key,value in php.config.iteritems() %}
+{% for key,value in php_config.iteritems() %}
 {{ key }} = {{ value }}
 {% endfor %}
 
-{% if php.extra_configuration is defined %}
+{% if php_config.extra_configuration is defined %}
 {{ php.extra_configuration }}
 {% endif -%}
 
 ;;; Module configuration ;;;
 
-{% for section,dict in php.modules.iteritems() %}
+{% for section,dict in php_modules.iteritems() %}
 [{{ dict.name }}]
 {% for key,value in dict.config.iteritems() %}
 {{ section }}.{{ key }}: {{ value }}
