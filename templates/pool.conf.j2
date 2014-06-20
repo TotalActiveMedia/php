@@ -8,7 +8,9 @@ user = {{ phpfpm.default_user }}
 listen = 127.0.0.1:9000
 pm = dynamic
 pm.max_children = 50
-
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
 {% else %}
 
 {% for pool in phpfpm_pools %}
