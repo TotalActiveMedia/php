@@ -3,7 +3,7 @@
 {% if phpfpm_pools.0 is not defined %}
 {# PHP-FPM needs at least one pool to start properly #}
 
-#default]
+[default]
 user = {{ phpfpm.default_user }}
 listen = 127.0.0.1:9000
 pm = dynamic
