@@ -7,6 +7,15 @@ php_conf_root: /dev/null
 # Common PHP configuration
 #   For Debian/Ubuntu: each SAPI config is identical
 php:
+  conf_root: /etc/php5
+  packages:
+    - php5=5.5.15-1~dotdeb.1
+    - php5-cli=5.5.15-1~dotdeb.1
+    - php5-common=5.5.15-1~dotdeb.1
+    - libapache2-mod-php5=5.5.15-1~dotdeb.1
+    - libapache2-mod-fcgid
+    - php5-fpm=5.5.15-1~dotdeb.1
+  mods_enabled:
   config:
     # The "greatest hits" of PHP core configuration
     allow_url_fopen: "On"

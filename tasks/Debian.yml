@@ -1,9 +1,7 @@
 ---
 
 - name: Debian | Install packages
-  apt: >
-    name={{ item }}
-    state=installed
+  apt: name={{ item }} state=installed force=yes
   with_items: php.packages
 
 - name: Debian | Global php.ini files

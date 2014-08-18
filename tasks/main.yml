@@ -9,6 +9,9 @@
 - include: Debian.yml
   when: ansible_distribution == "Ubuntu"
 
+- include: Debian.yml
+  when: ansible_distribution == "Debian"
+
 - name: Global php-fpm.conf
   template: >
     src="php-fpm.conf.j2"
