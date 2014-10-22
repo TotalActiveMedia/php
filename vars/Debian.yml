@@ -9,6 +9,7 @@ php:
     - libapache2-mod-php5
     - libapache2-mod-fcgid
     - php5-fpm
+    - php5-mysql
   mods_enabled:
 
 phpfpm:
